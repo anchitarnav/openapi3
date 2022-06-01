@@ -341,7 +341,7 @@ class Operation(ObjectBase):
             session = self._session
 
         # send the prepared request
-        result = session.send(self._request.prepare())
+        result = session.send(self._request.prepare(), verify=verify)
 
         # spec enforces these are strings
         status_code = str(result.status_code)
@@ -390,6 +390,8 @@ class Operation(ObjectBase):
 
         if content_type.lower() == "application/json":
             return expected_media.schema.model(result.json())
+        elif "text" in content_type.lower():
+            return expected_media.schema.model(result.text)
         else:
             raise NotImplementedError()
 
