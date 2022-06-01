@@ -152,8 +152,7 @@ class Schema(ObjectBase):
         """
         if self.properties is None and self.type in ("string", "number"):  # more simple types
             # if this schema represents a simple type, simply return the data
-            # TODO - perhaps assert that the type of data matches the type we
-            # expected
+            assert isinstance(data, str), f"Data type {type(data)} does not match expected type {self.type}"
             return data
         elif self.type == "array":
             return [self.items.get_type()(i, self.items) for i in data]
