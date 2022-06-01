@@ -1,6 +1,9 @@
 openapi3
 ========
 
+This project is forked from https://github.com/Dorthu/openapi3
+Additional capabilities added on top of it
+
 A Python `OpenAPI 3 Specification`_ client and validator for Python 3.
 
 .. image:: https://github.com/Dorthu/openapi3/actions/workflows/main.yml/badge.svg
