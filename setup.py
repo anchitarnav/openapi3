@@ -13,12 +13,12 @@ with open(path.join(here, "README.rst"), encoding="utf-8") as f:
 
 
 setup(
-    name="openapi3",
-    version="1.6.5",
-    description="Client and Validator of OpenAPI 3 Specifications",
+    name="openapi3v1",
+    version="0.0.1",
+    description="Client and Validator of OpenAPI 3 Specifications. Forked from dorthu/openapi3 ad modifications made on top of it",
     long_description=long_description,
-    author="dorthu",
-    url="https://github.com/dorthu/openapi3",
+    author="Anchit Arnav",
+    url="https://github.com/anchitarnav/openapi3",
     packages=["openapi3"],
     license="BSD 3-Clause License",
     install_requires=["PyYaml", "requests"],
