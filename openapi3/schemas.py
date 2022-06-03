@@ -153,9 +153,9 @@ class Schema(ObjectBase):
         if self.properties is None and self.type in ("string", "number"):  # more simple types
             # if this schema represents a simple type, simply return the data
             assert isinstance(data, str), f"Data type {type(data)} does not match expected type {self.type}"
-            return data
+            return IString(data)
         elif self.type == "array":
-            return [self.items.get_type()(i, self.items) for i in data]
+            return IList(self.items.get_type()(i, self.items) for i in data)
         else:
             return self.get_type()(data, self)
 
@@ -255,7 +255,15 @@ class Schema(ObjectBase):
                     setattr(self, slot, other_value)
 
 
-class Model:
+class ExtraPropertiesMixin:
+    def set_raw_response(self, raw_response):
+        self._raw_response = raw_response
+
+    @property
+    def status_code(self):
+        return self._raw_response.status_code
+
+class Model(ExtraPropertiesMixin):
     """
     A Model is a representation of a Schema as a request or response.  Models
     are generated from Schema objects by called :any:`Schema.model` with the
@@ -311,3 +319,17 @@ class Model:
                 continue
             yield s, getattr(self, s)
         return
+
+    # def set_raw_response(self, raw_response):
+    #     self._raw_response = raw_response
+    #
+    # @property
+    # def status_code(self):
+    #     return self._raw_response.status_code
+
+
+class IList(ExtraPropertiesMixin, list):
+    ...
+
+class IString(ExtraPropertiesMixin, str):
+    ...

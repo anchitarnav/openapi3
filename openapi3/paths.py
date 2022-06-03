@@ -283,7 +283,7 @@ class Operation(ObjectBase):
         else:
             raise NotImplementedError()
 
-    def request(self, base_url, security={}, data=None, parameters={}, verify=True, session=None, raw_response=False):
+    def request(self, base_url, security={}, data=None, parameters={}, verify=True, session=None, raw_response=False, timeout=10):
         """
         Sends an HTTP request as described by this Path
 
@@ -341,7 +341,10 @@ class Operation(ObjectBase):
             session = self._session
 
         # send the prepared request
-        result = session.send(self._request.prepare(), verify=verify)
+        result = session.send(self._request.prepare(), verify=verify, timeout=timeout)
+
+        if raw_response is True:
+            return raw_response
 
         # spec enforces these are strings
         status_code = str(result.status_code)
@@ -386,14 +389,14 @@ class Operation(ObjectBase):
 
             raise RuntimeError(err_msg.format(*err_var))
 
-        response_data = None
-
         if content_type.lower() == "application/json":
-            return expected_media.schema.model(result.json())
+            response_data = expected_media.schema.model(result.json())
         elif "text" in content_type.lower():
-            return expected_media.schema.model(result.text)
+            response_data = expected_media.schema.model(result.text)
         else:
             raise NotImplementedError()
+        response_data.set_raw_response(result)
+        return response_data
 
 
 class SecurityRequirement(ObjectBase):
