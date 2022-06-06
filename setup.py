@@ -14,7 +14,7 @@ with open(path.join(here, "README.rst"), encoding="utf-8") as f:
 
 setup(
     name="openapi3v1",
-    version="0.0.1",
+    version="0.0.2",
     description="Client and Validator of OpenAPI 3 Specifications. Forked from dorthu/openapi3 ad modifications made on top of it",
     long_description=long_description,
     author="Anchit Arnav",
